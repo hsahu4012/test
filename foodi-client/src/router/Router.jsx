@@ -14,69 +14,84 @@ import Users from "../pages/dashboard/admin/Users";
 import AddMenu from "../pages/dashboard/admin/AddMenu";
 import ManageItems from "../pages/dashboard/admin/ManageItems";
 import UpdateMenu from "../pages/dashboard/admin/UpdateMenu";
+import Payment from "../pages/menuPage/Payment";
 
 const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Main/>,
-      children: [
-        {
-            path: "/",
-            element: <Home/>
-        },
-        {
-          path: "/menu",
-          element: <Menu/>
-        },
-        {
-          path: "/order",
-          element:<PrivateRoute><Order/></PrivateRoute>
-        },
-        {
-          path: "/update-profile",
-          element: <UserProfile/>
-        },
-        {
-          path: "/cart-page",
-          element: <CartPage/>
-        }
-      ]
-    },
-    {
-      path: "/signup",
-      element: <Signup/>
-    },
-    {
-      path: "/login",
-      element: <Login/>
-    },
-    {
-      path: 'dashboard',
-      element: <PrivateRoute><DashboardLayout/></PrivateRoute>,
-      children: [
-        {
-          path: '',
-          element: <Dashboard/>
-        },
-        {
-          path: 'users', 
-          element: <Users/>
-        },
-        {
-          path: 'add-menu',
-          element: <AddMenu/>
-        }, 
-        {
-          path: "manage-items",
-          element: <ManageItems/>
-        },
-        {
-          path: "update-menu/:id",
-          element: <UpdateMenu/>,
-          loader: ({params}) => fetch(`http://localhost:6001/menu/${params.id}`)
-        }
-      ]
-    }
-  ]);
+  {
+    path: "/",
+    element: <Main />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/menu",
+        element: <Menu />,
+      },
+      {
+        path: "/order",
+        element: (
+          <PrivateRoute>
+            <Order />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-profile",
+        element: <UserProfile />,
+      },
+      {
+        path: "/cart-page",
+        element: <CartPage />,
+      },
+      {
+        path: "/process-checkout",
+        element: <Payment />,
+      },
+    ],
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  //  admin routes
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "",
+        element: <Dashboard />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "add-menu",
+        element: <AddMenu />,
+      },
+      {
+        path: "manage-items",
+        element: <ManageItems />,
+      },
+      {
+        path: "update-menu/:id",
+        element: <UpdateMenu />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:6001/menu/${params.id}`),
+      },
+    ],
+  },
+]);
 
-  export default router;
+export default router;
