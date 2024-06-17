@@ -8,7 +8,38 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortOption, setSortOption] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(8); // Number of items to display per page
+  // const [itemsPerPage] = useState(8); // Number of items to display per page
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
+
+  // Function to determine the items per page based on screen width
+  function getItemsPerPage() {
+    const width = window.innerWidth;
+    if (width < 768) {
+      // Tailwind's sm breakpoint
+      return 8;
+    } else if (width < 1024) {
+      // Tailwind's md breakpoint
+      return 9;
+    } else {
+      // Larger screens (lg and above)
+      return 8;
+    }
+  }
+
+  const handleResize = () => {
+    setItemsPerPage(getItemsPerPage());
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    // Set the initial value
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch data from the backend
@@ -40,7 +71,7 @@ const Menu = () => {
   const showAll = () => {
     setFilteredItems(menu);
     setSelectedCategory("all");
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const handleSortChange = (option) => {
@@ -71,14 +102,13 @@ const Menu = () => {
     setCurrentPage(1);
   };
 
-//   console.log(filteredItems);
+  //   console.log(filteredItems);
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
 
   return (
     <div>
@@ -105,8 +135,7 @@ const Menu = () => {
       {/* menu shop  */}
       <div className="section-container">
         <div className="flex flex-col md:flex-row flex-wrap md:justify-between items-center space-y-3 mb-8">
-          
-           {/* all category buttons */}
+          {/* all category buttons */}
           <div className="flex flex-row justify-start md:items-center md:gap-8 gap-4  flex-wrap">
             <button
               onClick={showAll}
@@ -146,7 +175,7 @@ const Menu = () => {
             </button>
           </div>
 
-            {/* filter options */}
+          {/* filter options */}
           <div className="flex justify-end mb-4 rounded-sm">
             <div className="bg-black p-2 ">
               <FaFilter className="text-white h-4 w-4" />
@@ -167,16 +196,18 @@ const Menu = () => {
         </div>
 
         {/* product card */}
-        <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4 ">
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 ">
           {currentItems.map((item, index) => (
             <Cards key={index} item={item} />
           ))}
         </div>
       </div>
 
-       {/* Pagination */}
-       <div className="flex justify-center my-8 flex-wrap gap-2">
-        {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).map((_, index) => (
+      {/* Pagination */}
+      <div className="flex justify-center my-8 flex-wrap gap-2">
+        {Array.from({
+          length: Math.ceil(filteredItems.length / itemsPerPage),
+        }).map((_, index) => (
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
