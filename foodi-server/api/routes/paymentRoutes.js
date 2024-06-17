@@ -33,7 +33,7 @@ router.get("/", verifyToken, async (req, res) => {
     if (email !== decodedEmail) {
       res.status(403).json({ message: "Forbidden Access" });
     }
-    const result = await Payment.find(query).sort({ createdAt }).exec();
+    const result = await Payment.find(query).sort({ createdAt: -1 }).exec();
     // console.log(res.status(200).json(result));
     res.status(200).json(result);
   } catch (error) {

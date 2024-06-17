@@ -27,7 +27,7 @@ const Order = () => {
   // console.log(orders);
   const formatDate = (createdAt) => {
     const createdAtDate = new Date(createdAt);
-    return createdAtDate.toLocaleDateString();
+    return createdAtDate.toLocaleDateString("en-GB");
   };
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
@@ -37,7 +37,7 @@ const Order = () => {
           {/* content */}
           <div className=" text-center px-4 space-y-7">
             <h2 className="md:text-5xl text-4xl font-bold md:leading-snug leading-snug">
-              Track All Your<span className="text-green"> Orders</span>
+              Track All Your<span className="text-green"> Orders!</span>
             </h2>
           </div>
         </div>
@@ -84,32 +84,10 @@ const Order = () => {
               </div>
             </div>
             <hr />
-            <div className="flex flex-col md:flex-row justify-between items-start my-12 gap-8">
-              <div className="md:w-1/2 space-y-3">
-                <h3 className="text-lg font-semibold">Customer Details</h3>
-                <p>Name: {user?.displayName || "None"}</p>
-                <p>Email: {user?.email}</p>
-                <p>
-                  User_id: <span className="text-sm">{user?.uid}</span>
-                </p>
-              </div>
-              <div className="md:w-1/2 space-y-3">
-                <h3 className="text-lg font-semibold">Shopping Details</h3>
-                <p>Total Items: </p>
-                <p>
-                  Total Price: <span id="total-price"></span>
-                </p>
-                <Link to="/process-checkout">
-                  <button className="btn btn-md bg-green text-white px-8 py-1">
-                    Procceed to Checkout
-                  </button>
-                </Link>
-              </div>
-            </div>
           </div>
         ) : (
           <div className="text-center mt-20">
-            <p>Cart is empty. Please add products.</p>
+            <p>Order is empty. Please add products.</p>
             <Link to="/menu">
               <button className="btn bg-green text-white mt-3">
                 Back to Menu
